@@ -1,0 +1,47 @@
+diff -up otf2-1.2.1/Makefile.in.jinja2 otf2-1.2.1/Makefile.in
+--- otf2-1.2.1/Makefile.in.jinja2	2013-09-18 03:34:28.000000000 -0600
++++ otf2-1.2.1/Makefile.in	2013-10-21 16:17:45.010683280 -0600
+@@ -117,11 +117,7 @@ am__base_list = \
+   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+ am__installdirs = "$(DESTDIR)$(bindir)" \
+-	"$(DESTDIR)$(_markupsafejinja2pythonpkgdatadir)" \
+-	"$(DESTDIR)$(jinja2pythonpkgdatadir)" \
+ 	"$(DESTDIR)$(otf2pythonpkgdatadir)" \
+-	"$(DESTDIR)$(jinja2eggpythonpkgdatadir)" \
+-	"$(DESTDIR)$(jinja2pythonpkgdatadir)" \
+ 	"$(DESTDIR)$(otf2pythonpkgdatadir)" "$(DESTDIR)$(pkgdatadir)"
+ SCRIPTS = $(dist_bin_SCRIPTS)
+ AM_V_GEN = $(am__v_GEN_$(V))
+@@ -140,8 +136,7 @@ RECURSIVE_TARGETS = all-recursive check-
+ 	installcheck-recursive installdirs-recursive pdf-recursive \
+ 	ps-recursive uninstall-recursive
+ py_compile = $(top_srcdir)/build-config/py-compile
+-DATA = $(jinja2eggpythonpkgdata_DATA) $(jinja2pythonpkgdata_DATA) \
+-	$(noinst_DATA) $(otf2pythonpkgdata_DATA) $(pkgdata_DATA)
++DATA = $(noinst_DATA) $(otf2pythonpkgdata_DATA) $(pkgdata_DATA)
+ RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
+   distclean-recursive maintainer-clean-recursive
+ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
+@@ -1214,7 +1209,7 @@ check: $(BUILT_SOURCES)
+ all-am: Makefile $(SCRIPTS) $(DATA)
+ installdirs: installdirs-recursive
+ installdirs-am:
+-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(_markupsafejinja2pythonpkgdatadir)" "$(DESTDIR)$(jinja2pythonpkgdatadir)" "$(DESTDIR)$(otf2pythonpkgdatadir)" "$(DESTDIR)$(jinja2eggpythonpkgdatadir)" "$(DESTDIR)$(jinja2pythonpkgdatadir)" "$(DESTDIR)$(otf2pythonpkgdatadir)" "$(DESTDIR)$(pkgdatadir)"; do \
++	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(otf2pythonpkgdatadir)" "$(DESTDIR)$(otf2pythonpkgdatadir)" "$(DESTDIR)$(pkgdatadir)"; do \
+ 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+ 	done
+ install: $(BUILT_SOURCES)
+@@ -1267,10 +1262,8 @@ info: info-recursive
+ 
+ info-am:
+ 
+-install-data-am: install-_markupsafejinja2pythonpkgdataPYTHON \
+-	install-data-local install-jinja2eggpythonpkgdataDATA \
+-	install-jinja2pythonpkgdataDATA \
+-	install-jinja2pythonpkgdataPYTHON \
++install-data-am: \
++	install-data-local \
+ 	install-otf2pythonpkgdataDATA install-otf2pythonpkgdataPYTHON \
+ 	install-pkgdataDATA
+ 
