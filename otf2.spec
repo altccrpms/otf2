@@ -1,6 +1,6 @@
 Name:           otf2
 Version:        1.2.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -96,6 +96,9 @@ make check
 
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Thu Oct 24 2013 Orion Poplawski <orion@cora.nwra.com> - 1.2.1-4
 - Move otf2-config back to -devel
 
