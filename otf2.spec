@@ -1,6 +1,9 @@
+# Needed for el7
+%{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
+
 Name:           otf2
-Version:        1.2.1
-Release:        5%{?dist}
+Version:        1.4
+Release:        1%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -8,8 +11,12 @@ URL:            http://www.vi-hps.org/projects/score-p/
 Source0:        http://www.vi-hps.org/upload/packages/%{name}/%{name}-%{version}.tar.gz
 # Remove jinja2
 Patch0:         otf2-jinja2.patch
+# Fix AC_CONFIG_MACRO_DIR and remove $(srcdir) from TESTS
+Patch1:         otf2-autoconf.patch
 
 BuildRequires:  python2-devel
+# For autoreconf, etc.
+BuildRequires:  libtool
 Requires:       python-jinja2
 
 
@@ -39,19 +46,21 @@ The %{name}-doc package contains documentation files for %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .jinja2
-find . -name configure -exec sed -i 's|sys_lib_dlsearch_path_spec=\"/lib /usr/lib $lt_ld_extra\"|sys_lib_dlsearch_path_spec=\"/lib64 /usr/lib64 /lib /usr/lib $lt_ld_extra\"|g' '{}' \; 
-
+%patch1 -p1 -b .autoconf
+#sed -i -e '/front-and-backend.am/d' ./build-frontend/Makefile.am
 # Bundled modified jinja2 in vendor/
 rm -rf vendor/python/site-packages
-# Remove setting -rpath in otf2-config
-sed -i -e '/^HARDCODE_INTO_LIBS/s/=.*/=0/' \
-       -e '/^HARDCODE_LIBDIR_FLAG_C/s/=.*/=/' */configure
+for d in . build-backend build-frontend
+do
+  cd $d
+  autoreconf -f -i -v
+  cd -
+done
 
 
 %build
 %configure --disable-static --enable-shared --disable-silent-rules \
- --enable-backend-test-runs \
- --with-platform=linux
+ --docdir=%{_pkgdocdir} --enable-backend-test-runs --with-platform=linux
 make %{?_smp_mflags}
 
 
@@ -71,16 +80,18 @@ make check
 
 %files
 %doc AUTHORS ChangeLog COPYING README
+%{_bindir}/%{name}-estimator
 %{_bindir}/%{name}-marker
 %{_bindir}/%{name}-print
 %{_bindir}/%{name}-snapshots
 %{_bindir}/%{name}-template
-%{_libdir}/lib%{name}.so.3*
+%{_libdir}/lib%{name}.so.5*
 %dir %{_datadir}/%{name}/
+%{_datadir}/%{name}/%{name}.summary
 %{_datadir}/%{name}/python
-%exclude %{_defaultdocdir}/%{name}/html
-%exclude %{_defaultdocdir}/%{name}/pdf
-%exclude %{_defaultdocdir}/%{name}/tags
+%exclude %{_pkgdocdir}/html
+%exclude %{_pkgdocdir}/pdf
+%exclude %{_pkgdocdir}/tags
 
 %files devel
 %{_bindir}/%{name}-config
@@ -89,13 +100,17 @@ make check
 
 %files doc
 %doc COPYING
-%dir %{_defaultdocdir}/%{name}
-%{_defaultdocdir}/%{name}/html/
-%{_defaultdocdir}/%{name}/pdf/
-%{_defaultdocdir}/%{name}/tags/
+%dir %{_pkgdocdir}
+%{_pkgdocdir}/html/
+%{_pkgdocdir}/pdf/
+%{_pkgdocdir}/tags/
 
 
 %changelog
+* Tue Jul 15 2014 Orion Poplawski <orion@cora.nwra.com> - 1.4-1
+- Update to 1.4
+- Add patch to allow running autoreconf to remove rpaths
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
