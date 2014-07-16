@@ -3,7 +3,7 @@
 
 Name:           otf2
 Version:        1.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -47,7 +47,6 @@ The %{name}-doc package contains documentation files for %{name}.
 %setup -q
 %patch0 -p1 -b .jinja2
 %patch1 -p1 -b .autoconf
-#sed -i -e '/front-and-backend.am/d' ./build-frontend/Makefile.am
 # Bundled modified jinja2 in vendor/
 rm -rf vendor/python/site-packages
 for d in . build-backend build-frontend
@@ -56,6 +55,8 @@ do
   autoreconf -f -i -v
   cd -
 done
+# Remove ldflags
+sed -i -s '/deps.GetLDFlags/d' src/tools/otf2_config/otf2_config.cpp
 
 
 %build
@@ -107,6 +108,9 @@ make check
 
 
 %changelog
+* Wed Jul 16 2014 Orion Poplawski <orion@cora.nwra.com> - 1.4-2
+- Remove ldflags output from otf2-config
+
 * Tue Jul 15 2014 Orion Poplawski <orion@cora.nwra.com> - 1.4-1
 - Update to 1.4
 - Add patch to allow running autoreconf to remove rpaths
