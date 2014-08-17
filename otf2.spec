@@ -3,7 +3,7 @@
 
 Name:           otf2
 Version:        1.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -108,6 +108,9 @@ make check
 
 
 %changelog
+* Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.4-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Wed Jul 16 2014 Orion Poplawski <orion@cora.nwra.com> - 1.4-2
 - Remove ldflags output from otf2-config
 
