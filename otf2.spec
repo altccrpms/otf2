@@ -2,8 +2,8 @@
 %{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
 
 Name:           otf2
-Version:        1.4
-Release:        3%{?dist}
+Version:        1.5.1
+Release:        1%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -108,6 +108,9 @@ make check
 
 
 %changelog
+* Wed Feb 11 2015 Orion Poplawski <orion@cora.nwra.com> - 1.5.1-1
+- Update to 1.5.1
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 

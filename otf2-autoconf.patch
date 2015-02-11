@@ -1,6 +1,6 @@
-diff -up otf2-1.4/build-backend/configure.ac.autoconf otf2-1.4/build-backend/configure.ac
---- otf2-1.4/build-backend/configure.ac.autoconf	2014-05-12 03:47:29.000000000 -0600
-+++ otf2-1.4/build-backend/configure.ac	2014-07-15 15:15:35.264741290 -0600
+diff -up otf2-1.5.1/build-backend/configure.ac.autoconf otf2-1.5.1/build-backend/configure.ac
+--- otf2-1.5.1/build-backend/configure.ac.autoconf	2014-12-09 08:14:07.000000000 -0700
++++ otf2-1.5.1/build-backend/configure.ac	2015-02-11 16:44:33.586014839 -0700
 @@ -37,8 +37,7 @@ AC_SUBST([LIBRARY_INTERFACE_VERSION], m4
  AC_DEFINE_UNQUOTED([LIBRARY_INTERFACE_VERSION], ["$LIBRARY_INTERFACE_VERSION"], [Interface version number])
  
@@ -11,9 +11,9 @@ diff -up otf2-1.4/build-backend/configure.ac.autoconf otf2-1.4/build-backend/con
  
  AC_CONFIG_HEADERS([../src/config-backend.h])
  AS_IF([test "x${ac_scorep_cross_compiling}" = "xyes"],
-diff -up otf2-1.4/build-frontend/configure.ac.autoconf otf2-1.4/build-frontend/configure.ac
---- otf2-1.4/build-frontend/configure.ac.autoconf	2014-05-12 03:47:30.000000000 -0600
-+++ otf2-1.4/build-frontend/configure.ac	2014-07-15 15:15:35.264741290 -0600
+diff -up otf2-1.5.1/build-frontend/configure.ac.autoconf otf2-1.5.1/build-frontend/configure.ac
+--- otf2-1.5.1/build-frontend/configure.ac.autoconf	2014-12-09 08:14:09.000000000 -0700
++++ otf2-1.5.1/build-frontend/configure.ac	2015-02-11 16:42:40.250536440 -0700
 @@ -37,8 +37,7 @@ AC_SUBST([LIBRARY_INTERFACE_VERSION], m4
  AC_DEFINE_UNQUOTED([LIBRARY_INTERFACE_VERSION], ["$LIBRARY_INTERFACE_VERSION"], [Interface version number])
  
@@ -24,9 +24,9 @@ diff -up otf2-1.4/build-frontend/configure.ac.autoconf otf2-1.4/build-frontend/c
  
  AC_CONFIG_HEADERS([../src/config-frontend.h])
  
-diff -up otf2-1.4/configure.ac.autoconf otf2-1.4/configure.ac
---- otf2-1.4/configure.ac.autoconf	2014-05-12 03:47:30.000000000 -0600
-+++ otf2-1.4/configure.ac	2014-07-15 15:15:35.264741290 -0600
+diff -up otf2-1.5.1/configure.ac.autoconf otf2-1.5.1/configure.ac
+--- otf2-1.5.1/configure.ac.autoconf	2014-12-09 08:14:09.000000000 -0700
++++ otf2-1.5.1/configure.ac	2015-02-11 16:42:40.250536440 -0700
 @@ -45,10 +45,7 @@ AC_SCOREP_TOPLEVEL_ARGS
  ## in this directory.
  AC_CONFIG_AUX_DIR([build-config])
@@ -39,139 +39,9 @@ diff -up otf2-1.4/configure.ac.autoconf otf2-1.4/configure.ac
  
  ## Set the default installation prefix to /opt/otf2 instead of /usr/local
  AC_PREFIX_DEFAULT([/opt/otf2])
-@@ -130,3 +127,5 @@ AC_CONFIG_FILES(
+@@ -144,3 +141,5 @@ AC_CONFIG_FILES(
  AC_OUTPUT
  
  AFS_SUMMARY_COLLECT([test "x$ac_scorep_platform_data_provided" != "xyes"])
 +
 +LT_INIT
-diff -up otf2-1.4/test/OTF2_AnchorFile_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_AnchorFile_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_AnchorFile_test/Makefile.inc.am.autoconf	2014-05-12 03:47:29.000000000 -0600
-+++ otf2-1.4/test/OTF2_AnchorFile_test/Makefile.inc.am	2014-07-15 15:15:35.264741290 -0600
-@@ -45,6 +45,6 @@ OTF2_AnchorFile_test_CPPFLAGS = \
- OTF2_AnchorFile_test_LDADD = libotf2.la
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_AnchorFile_test/run_anchor_file_test.sh
-+    ../test/OTF2_AnchorFile_test/run_anchor_file_test.sh
- EXTRA_DIST += \
-     $(SRC_ROOT)test/OTF2_AnchorFile_test/run_anchor_file_test.sh
-diff -up otf2-1.4/test/OTF2_AttributeList_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_AttributeList_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_AttributeList_test/Makefile.inc.am.autoconf	2014-05-12 03:47:28.000000000 -0600
-+++ otf2-1.4/test/OTF2_AttributeList_test/Makefile.inc.am	2014-07-15 15:16:53.586396279 -0600
-@@ -43,6 +43,6 @@ OTF2_AttributeList_test_CPPFLAGS = \
-     -I$(INC_DIR_COMMON_CUTEST)
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_AttributeList_test/run_attribute_list_test.sh
-+    ../test/OTF2_AttributeList_test/run_attribute_list_test.sh
- EXTRA_DIST += \
-     $(SRC_ROOT)test/OTF2_AttributeList_test/run_attribute_list_test.sh
-diff -up otf2-1.4/test/OTF2_Event_Seek_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_Event_Seek_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_Event_Seek_test/Makefile.inc.am.autoconf	2014-05-12 03:47:28.000000000 -0600
-+++ otf2-1.4/test/OTF2_Event_Seek_test/Makefile.inc.am	2014-07-15 15:15:35.265741286 -0600
-@@ -40,11 +40,11 @@ OTF2_Event_Seek_test_CPPFLAGS = \
- OTF2_Event_Seek_test_LDADD    = $(LIB_ROOT)libotf2.la
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Event_Seek_test/run_otf2_event_seek_test.sh
-+    ../test/OTF2_Event_Seek_test/run_otf2_event_seek_test.sh
- 
- if HAVE_SIONLIB_SUPPORT
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Event_Seek_test/run_otf2_event_seek_test_sion.sh
-+    ../test/OTF2_Event_Seek_test/run_otf2_event_seek_test_sion.sh
- endif
- 
- EXTRA_DIST += \
-diff -up otf2-1.4/test/OTF2_File_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_File_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_File_test/Makefile.inc.am.autoconf	2014-05-12 03:47:29.000000000 -0600
-+++ otf2-1.4/test/OTF2_File_test/Makefile.inc.am	2014-07-15 15:15:35.265741286 -0600
-@@ -41,6 +41,6 @@ OTF2_File_test_CPPFLAGS = $(AM_CPPFLAGS)
- OTF2_File_test_LDADD = libotf2.la
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_File_test/run_otf2_file_test.sh
-+    ../test/OTF2_File_test/run_otf2_file_test.sh
- EXTRA_DIST += \
-     $(SRC_ROOT)test/OTF2_File_test/run_otf2_file_test.sh
-diff -up otf2-1.4/test/OTF2_Integrity_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_Integrity_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_Integrity_test/Makefile.inc.am.autoconf	2014-05-12 03:47:29.000000000 -0600
-+++ otf2-1.4/test/OTF2_Integrity_test/Makefile.inc.am	2014-07-15 15:15:35.265741286 -0600
-@@ -43,7 +43,7 @@ SCOREP_TESTS += ./run_otf2_integrity_tes
- 
- if HAVE_SIONLIB_SUPPORT
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Integrity_test/run_otf2_integrity_test_sion.sh
-+    ../test/OTF2_Integrity_test/run_otf2_integrity_test_sion.sh
- SCOREP_XFAIL_TESTS += \
-     $(srcdir)/../test/OTF2_Integrity_test/run_otf2_integrity_test_sion.sh
- endif
-diff -up otf2-1.4/test/OTF2_Old_Chunk_List_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_Old_Chunk_List_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_Old_Chunk_List_test/Makefile.inc.am.autoconf	2014-05-12 03:47:28.000000000 -0600
-+++ otf2-1.4/test/OTF2_Old_Chunk_List_test/Makefile.inc.am	2014-07-15 15:15:35.265741286 -0600
-@@ -44,11 +44,11 @@ OTF2_Old_Chunk_List_test_CPPFLAGS = \
- OTF2_Old_Chunk_List_test_LDADD = $(LIB_ROOT)libotf2.la
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Old_Chunk_List_test/run_old_chunk_list_test.sh
-+    ../test/OTF2_Old_Chunk_List_test/run_old_chunk_list_test.sh
- 
- if HAVE_SIONLIB_SUPPORT
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Old_Chunk_List_test/run_old_chunk_list_test_sion.sh
-+    run_old_chunk_list_test_sion.sh
- endif
- 
- EXTRA_DIST += \
-diff -up otf2-1.4/test/OTF2_Snapshot_Seek_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_Snapshot_Seek_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_Snapshot_Seek_test/Makefile.inc.am.autoconf	2014-05-12 03:47:28.000000000 -0600
-+++ otf2-1.4/test/OTF2_Snapshot_Seek_test/Makefile.inc.am	2014-07-15 15:15:35.265741286 -0600
-@@ -22,11 +22,11 @@ OTF2_Snapshot_Seek_test_CPPFLAGS = \
- OTF2_Snapshot_Seek_test_LDADD    = $(LIB_ROOT)libotf2.la
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Snapshot_Seek_test/run_otf2_snapshot_seek_test.sh
-+    ../test/OTF2_Snapshot_Seek_test/run_otf2_snapshot_seek_test.sh
- 
- if HAVE_SIONLIB_SUPPORT
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Snapshot_Seek_test/run_otf2_snapshot_seek_test_sion.sh
-+    ../test/OTF2_Snapshot_Seek_test/run_otf2_snapshot_seek_test_sion.sh
- endif
- 
- EXTRA_DIST += \
-diff -up otf2-1.4/test/OTF2_Timer_sync_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_Timer_sync_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_Timer_sync_test/Makefile.inc.am.autoconf	2014-05-12 03:47:29.000000000 -0600
-+++ otf2-1.4/test/OTF2_Timer_sync_test/Makefile.inc.am	2014-07-15 15:15:35.265741286 -0600
-@@ -40,11 +40,11 @@ OTF2_Timer_sync_test_CPPFLAGS = \
- OTF2_Timer_sync_test_LDADD    = $(LIB_ROOT)libotf2.la
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Timer_sync_test/run_otf2_timer_sync_test.sh
-+    ../test/OTF2_Timer_sync_test/run_otf2_timer_sync_test.sh
- 
- if HAVE_SIONLIB_SUPPORT
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_Timer_sync_test/run_otf2_timer_sync_test_sion.sh
-+    ../test/OTF2_Timer_sync_test/run_otf2_timer_sync_test_sion.sh
- endif
- 
- EXTRA_DIST += \
-diff -up otf2-1.4/test/OTF2_UnknownRecord_test/Makefile.inc.am.autoconf otf2-1.4/test/OTF2_UnknownRecord_test/Makefile.inc.am
---- otf2-1.4/test/OTF2_UnknownRecord_test/Makefile.inc.am.autoconf	2014-05-12 03:47:28.000000000 -0600
-+++ otf2-1.4/test/OTF2_UnknownRecord_test/Makefile.inc.am	2014-07-15 15:15:35.266741282 -0600
-@@ -45,11 +45,11 @@ OTF2_UnknownRecord_test_CPPFLAGS = \
- OTF2_UnknownRecord_test_LDADD = libotf2.la
- 
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_UnknownRecord_test/run_otf2_unknown_record_test.sh
-+    ../test/OTF2_UnknownRecord_test/run_otf2_unknown_record_test.sh
- 
- if HAVE_SIONLIB_SUPPORT
- SCOREP_TESTS += \
--    $(srcdir)/../test/OTF2_UnknownRecord_test/run_otf2_unknown_record_test_sion.sh
-+    ../test/OTF2_UnknownRecord_test/run_otf2_unknown_record_test_sion.sh
- endif
- 
- EXTRA_DIST += \
