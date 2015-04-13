@@ -3,7 +3,7 @@
 
 Name:           otf2
 Version:        1.5.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -15,7 +15,11 @@ Patch0:         otf2-jinja2.patch
 Patch1:         otf2-autoconf.patch
 
 BuildRequires:  python2-devel
-# For autoreconf, etc.
+%if 0%{?fedora} || 0%{?rhel} >= 7
+BuildRequires:  autoconf >= 2.69
+%else
+BuildRequires:  autoconf268
+%endif
 BuildRequires:  libtool
 Requires:       python-jinja2
 
@@ -46,13 +50,24 @@ The %{name}-doc package contains documentation files for %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .jinja2
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %patch1 -p1 -b .autoconf
+%endif
 # Bundled modified jinja2 in vendor/
 rm -rf vendor/python/site-packages
+%if 0%{?fedora} || 0%{?rhel} >= 7
 for d in . build-backend build-frontend
+%else
+# autoconf 2.68 chokes on build-* configs
+for d in .
+%endif
 do
   cd $d
+%if 0%{?fedora} || 0%{?rhel} >= 7
   autoreconf -f -i -v
+%else
+  autoreconf268 -f -i -v
+%endif
   cd -
 done
 # Remove ldflags
@@ -68,6 +83,10 @@ make %{?_smp_mflags}
 %install
 %make_install
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
+cp -p AUTHORS ChangeLog README %{buildroot}%{_pkgdocdir}/
+%if 0%{?rhel} && 0%{?rhel} < 7
+cp -p COPYING %{buildroot}%{_pkgdocdir}/
+%endif
 
 
 %check
@@ -80,7 +99,9 @@ make check
 
 
 %files
-%doc AUTHORS ChangeLog COPYING README
+%if 0%{?fedora} || 0%{?rhel} >= 7
+%license COPYING
+%endif
 %{_bindir}/%{name}-estimator
 %{_bindir}/%{name}-marker
 %{_bindir}/%{name}-print
@@ -90,6 +111,12 @@ make check
 %dir %{_datadir}/%{name}/
 %{_datadir}/%{name}/%{name}.summary
 %{_datadir}/%{name}/python
+%{_pkgdocdir}/AUTHORS
+%{_pkgdocdir}/ChangeLog
+%if 0%{?rhel} && 0%{?rhel} < 7
+%{_pkgdocdir}/COPYING
+%endif
+%{_pkgdocdir}/README
 %exclude %{_pkgdocdir}/html
 %exclude %{_pkgdocdir}/pdf
 %exclude %{_pkgdocdir}/tags
@@ -100,14 +127,25 @@ make check
 %{_libdir}/lib%{name}.so
 
 %files doc
-%doc COPYING
+%if 0%{?fedora} || 0%{?rhel} >= 7
+%license COPYING
+%endif
 %dir %{_pkgdocdir}
+%if 0%{?rhel} && 0%{?rhel} < 7
+%{_pkgdocdir}/COPYING
+%endif
+%{_pkgdocdir}/examples/
 %{_pkgdocdir}/html/
 %{_pkgdocdir}/pdf/
 %{_pkgdocdir}/tags/
 
 
 %changelog
+* Mon Apr 13 2015 Orion Poplawski <orion@cora.nwra.com> - 1.5.1-2
+- BR autoconf268 on el6 and use it
+- Do not apply autoconf patch and only autoreconf top level on el6
+- Fixup doc install
+
 * Wed Feb 11 2015 Orion Poplawski <orion@cora.nwra.com> - 1.5.1-1
 - Update to 1.5.1
 
