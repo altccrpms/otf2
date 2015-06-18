@@ -3,7 +3,7 @@
 
 Name:           otf2
 Version:        1.5.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -141,6 +141,9 @@ make check
 
 
 %changelog
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.5.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Mon Apr 13 2015 Orion Poplawski <orion@cora.nwra.com> - 1.5.1-2
 - BR autoconf268 on el6 and use it
 - Do not apply autoconf patch and only autoreconf top level on el6
