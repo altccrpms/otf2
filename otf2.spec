@@ -2,8 +2,8 @@
 %{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
 
 Name:           otf2
-Version:        1.5.1
-Release:        4%{?dist}
+Version:        2.0
+Release:        1%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
@@ -11,15 +11,8 @@ URL:            http://www.vi-hps.org/projects/score-p/
 Source0:        http://www.vi-hps.org/upload/packages/%{name}/%{name}-%{version}.tar.gz
 # Remove jinja2
 Patch0:         otf2-jinja2.patch
-# Fix AC_CONFIG_MACRO_DIR and remove $(srcdir) from TESTS
-Patch1:         otf2-autoconf.patch
 
 BuildRequires:  python2-devel
-%if 0%{?fedora} || 0%{?rhel} >= 7
-BuildRequires:  autoconf >= 2.69
-%else
-BuildRequires:  autoconf268
-%endif
 BuildRequires:  libtool
 Requires:       python-jinja2
 
@@ -50,26 +43,8 @@ The %{name}-doc package contains documentation files for %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .jinja2
-%if 0%{?fedora} || 0%{?rhel} >= 7
-%patch1 -p1 -b .autoconf
-%endif
 # Bundled modified jinja2 in vendor/
-rm -rf vendor/python/site-packages
-%if 0%{?fedora} || 0%{?rhel} >= 7
-for d in . build-backend build-frontend
-%else
-# autoconf 2.68 chokes on build-* configs
-for d in .
-%endif
-do
-  cd $d
-%if 0%{?fedora} || 0%{?rhel} >= 7
-  autoreconf -f -i -v
-%else
-  autoreconf268 -f -i -v
-%endif
-  cd -
-done
+rm -r vendor/python/site-packages
 # Remove ldflags
 sed -i -s '/deps.GetLDFlags/d' src/tools/otf2_config/otf2_config.cpp
 
@@ -82,11 +57,8 @@ make %{?_smp_mflags}
 
 %install
 %make_install
-find %{buildroot} -name '*.la' -exec rm -f {} ';'
+find %{buildroot} -name '*.la' -delete
 cp -p AUTHORS ChangeLog README %{buildroot}%{_pkgdocdir}/
-%if 0%{?rhel} && 0%{?rhel} < 7
-cp -p COPYING %{buildroot}%{_pkgdocdir}/
-%endif
 
 
 %check
@@ -99,23 +71,19 @@ make check
 
 
 %files
-%if 0%{?fedora} || 0%{?rhel} >= 7
 %license COPYING
-%endif
 %{_bindir}/%{name}-estimator
 %{_bindir}/%{name}-marker
 %{_bindir}/%{name}-print
 %{_bindir}/%{name}-snapshots
 %{_bindir}/%{name}-template
-%{_libdir}/lib%{name}.so.5*
+%{_libdir}/lib%{name}.so.7*
 %dir %{_datadir}/%{name}/
 %{_datadir}/%{name}/%{name}.summary
 %{_datadir}/%{name}/python
 %{_pkgdocdir}/AUTHORS
 %{_pkgdocdir}/ChangeLog
-%if 0%{?rhel} && 0%{?rhel} < 7
-%{_pkgdocdir}/COPYING
-%endif
+%{_pkgdocdir}/OPEN_ISSUES
 %{_pkgdocdir}/README
 %exclude %{_pkgdocdir}/html
 %exclude %{_pkgdocdir}/pdf
@@ -127,13 +95,8 @@ make check
 %{_libdir}/lib%{name}.so
 
 %files doc
-%if 0%{?fedora} || 0%{?rhel} >= 7
 %license COPYING
-%endif
 %dir %{_pkgdocdir}
-%if 0%{?rhel} && 0%{?rhel} < 7
-%{_pkgdocdir}/COPYING
-%endif
 %{_pkgdocdir}/examples/
 %{_pkgdocdir}/html/
 %{_pkgdocdir}/pdf/
@@ -141,6 +104,9 @@ make check
 
 
 %changelog
+* Thu Apr 14 2016 Orion Poplawski <orion@cora.nwra.com> - 2.0-1
+- Update to 2.0
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
