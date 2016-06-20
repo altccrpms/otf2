@@ -1,20 +1,27 @@
-# Needed for el7
-%{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
+%global shortname otf2
+%global ver 2.0
+%{?altcc_init}
 
-Name:           otf2
-Version:        2.0
+# Needed for el7
+%{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{shortname}-%{version}}
+
+Name:           %{shortname}%{?altcc_pkg_suffix}
+Version:        %{ver}
 Release:        1%{?dist}
 Summary:        Open Trace Format 2 library
 
 License:        BSD
 URL:            http://www.vi-hps.org/projects/score-p/
-Source0:        http://www.vi-hps.org/upload/packages/%{name}/%{name}-%{version}.tar.gz
+Source0:        http://www.vi-hps.org/upload/packages/%{shortname}/%{shortname}-%{version}.tar.gz
+Source1:        %{shortname}.module.in
 # Remove jinja2
 Patch0:         otf2-jinja2.patch
 
 BuildRequires:  python2-devel
 BuildRequires:  libtool
 Requires:       python-jinja2
+%?altcc_reqmodules
+%?altcc_provide
 
 
 %description
@@ -23,25 +30,27 @@ event trace data format plus support library.
 
 
 %package        devel
-Summary:        Development files for %{name}
+Summary:        Development files for %{shortname}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
+%{?altcc:%altcc_provide devel}
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
-developing applications that use %{name}.
+developing applications that use %{shortname}.
 
 
 %package        doc
-Summary:        Development files for %{name}
+Summary:        Development files for %{shortname}
 BuildArch:      noarch
+%{?altcc:%altcc_provide doc}
 
 %description    doc
-The %{name}-doc package contains documentation files for %{name}.
+The %{name}-doc package contains documentation files for %{shortname}.
 
 
 %prep
-%setup -q
+%setup -q -n %{shortname}-%{version}
 %patch0 -p1 -b .jinja2
 # Bundled modified jinja2 in vendor/
 rm -r vendor/python/site-packages
@@ -51,7 +60,8 @@ sed -i -s '/deps.GetLDFlags/d' src/tools/otf2_config/otf2_config.cpp
 
 %build
 %configure --disable-static --enable-shared --disable-silent-rules \
- --docdir=%{_pkgdocdir} --enable-backend-test-runs --with-platform=linux
+ --docdir=%{_pkgdocdir} --enable-backend-test-runs --with-platform=linux \
+  %{?altcc:--with-nocross-compiler-suite=%{altcc_cc_name}}
 make %{?_smp_mflags}
 
 
@@ -59,6 +69,9 @@ make %{?_smp_mflags}
 %make_install
 find %{buildroot} -name '*.la' -delete
 cp -p AUTHORS ChangeLog README %{buildroot}%{_pkgdocdir}/
+
+%{?altcc:%altcc_license}
+%{?altcc:%altcc_writemodule %SOURCE1}
 
 
 %check
@@ -71,16 +84,17 @@ make check
 
 
 %files
+%{?altcc:%altcc_files -dlm %{_bindir} %{_libdir}}
 %license COPYING
-%{_bindir}/%{name}-estimator
-%{_bindir}/%{name}-marker
-%{_bindir}/%{name}-print
-%{_bindir}/%{name}-snapshots
-%{_bindir}/%{name}-template
-%{_libdir}/lib%{name}.so.7*
-%dir %{_datadir}/%{name}/
-%{_datadir}/%{name}/%{name}.summary
-%{_datadir}/%{name}/python
+%{_bindir}/%{shortname}-estimator
+%{_bindir}/%{shortname}-marker
+%{_bindir}/%{shortname}-print
+%{_bindir}/%{shortname}-snapshots
+%{_bindir}/%{shortname}-template
+%{_libdir}/lib%{shortname}.so.7*
+%dir %{_datadir}/%{shortname}/
+%{_datadir}/%{shortname}/%{shortname}.summary
+%{_datadir}/%{shortname}/python
 %{_pkgdocdir}/AUTHORS
 %{_pkgdocdir}/ChangeLog
 %{_pkgdocdir}/OPEN_ISSUES
@@ -90,11 +104,13 @@ make check
 %exclude %{_pkgdocdir}/tags
 
 %files devel
-%{_bindir}/%{name}-config
-%{_includedir}/%{name}/
-%{_libdir}/lib%{name}.so
+%{?altcc:%altcc_files %{_includedir}}
+%{_bindir}/%{shortname}-config
+%{_includedir}/%{shortname}/
+%{_libdir}/lib%{shortname}.so
 
 %files doc
+%{?altcc:%altcc_files -dl}
 %license COPYING
 %dir %{_pkgdocdir}
 %{_pkgdocdir}/examples/

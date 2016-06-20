@@ -1,0 +1,12 @@
+#%Module 1.0
+#
+#  otf2 environment module
+#
+conflict	otf2
+prepend-path 	PATH 		@PREFIX@/bin
+prepend-path	MANPATH		@PREFIX@/share/man
+prepend-path 	LD_LIBRARY_PATH @PREFIX@/@LIB@
+setenv		OTF2_DIR	@PREFIX@
+setenv		OTF2_HOME	@PREFIX@
+setenv		OTF2_INCLUDE	@PREFIX@/include
+setenv		OTF2_LIB	@PREFIX@/@LIB@
